@@ -333,10 +333,17 @@
 
     <!-- JAVASCRIPT SYSTEM LOGIC -->
     <script>
-        // 1. BACA NAMA TAMU SIMPEL VIA QUERY PARAMETER (?to=namatamu)
+        // 1. BACA NAMA TAMU VIA QUERY PARAMETER (?to=namatamu) ATAU HASH (/#namatamu / #namatamu)
         function getGuestName() {
             const urlParams = new URLSearchParams(window.location.search);
-            const name = urlParams.get('to') || "Tamu Undangan";
+            let name = urlParams.get('to');
+
+            // Cek nama dari hash jika parameter ?to= kosong
+            if (!name && window.location.hash) {
+                name = decodeURIComponent(window.location.hash.substring(1)).replace(/^\//, '');
+            }
+
+            name = name || "Tamu Undangan";
             
             document.getElementById('guest-name').innerText = name;
             document.getElementById('rsvp-name').value = name;
